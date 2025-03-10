@@ -1,0 +1,5 @@
+spring:
+  data:
+    mongodb:
+      uri : mongodb+srv://spring_user:spring_pw@mystorage.kvxbz.mongodb.net/?retryWrites=true&w=majority&appName=myStorage
+      database : spring_db
