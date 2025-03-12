@@ -35,9 +35,12 @@ public class UserService {
                     // Proceed to add the user if the username does not exist
                     user.setUserId(generatedUserId);
                     user.setUserLoginState("signed-in");
-                    user.setUserName(user.getUserName().toLowerCase());
 
-                    if (user.getUserPassword() == null) {
+                    if (user.getUserName() == null || user.getUserName().equalsIgnoreCase("")) {
+                        return Mono.just("{\"message\": \"Username cannot be empty. Please enter a username.\"}");
+                    }
+
+                    if (user.getUserPassword() == null || user.getUserPassword().equalsIgnoreCase("")) {
                         user.setUserPassword(UUID.randomUUID().toString());
                     }
 
@@ -89,11 +92,11 @@ public class UserService {
                             })
                             .switchIfEmpty(Mono.defer(() -> {
                                 // Update user details if no conflict
-                                if (userRequest.getUserName() != null) {
+                                if (userRequest.getUserName() != null || !userRequest.getUserName().equalsIgnoreCase("")) {
                                     existingUser.setUserName(userRequest.getUserName());
                                 }
 
-                                if (userRequest.getUserPassword() != null) {
+                                if (userRequest.getUserPassword() != null || !userRequest.getUserPassword().equalsIgnoreCase("")) {
                                     existingUser.setUserPassword(userRequest.getUserPassword());
                                 }
 
